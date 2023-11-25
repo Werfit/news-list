@@ -1,7 +1,11 @@
 import { InputAdornment, OutlinedInput } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 
-const Search = () => {
+type Props = {
+  onChange?: (value: string) => void;
+};
+
+const Search: React.FC<Props> = ({ onChange }) => {
   return (
     <OutlinedInput
       placeholder="Search article"
@@ -12,6 +16,7 @@ const Search = () => {
           <SearchIcon />
         </InputAdornment>
       }
+      onChange={(event) => onChange && onChange(event.target.value)}
     />
   );
 };

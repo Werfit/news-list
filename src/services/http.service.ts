@@ -1,8 +1,10 @@
-import { Response } from "../lib/redux/news/common.ts";
-
 type Options = {
   baseUrl: string;
   apiKey: string;
+};
+
+type GetRequestOptions = {
+  absoluteUrl: boolean;
 };
 
 class HttpService {
@@ -14,10 +16,11 @@ class HttpService {
     this.apiKey = apiKey;
   }
 
-  async get(
+  async get<T>(
     path: string,
     query?: Record<string, string | number>,
-  ): Promise<Response> {
+    options?: GetRequestOptions,
+  ): Promise<T> {
     const params = new URLSearchParams();
 
     if (query) {
@@ -26,14 +29,15 @@ class HttpService {
       );
     }
 
-    const result = await fetch(
-      `${this.baseUrl}/${path}?apiKey=${this.apiKey}&${params.toString()}`,
-      {
-        method: "GET",
-      },
-    );
+    const url = options?.absoluteUrl
+      ? `${path}&${params.toString()}`
+      : `${this.baseUrl}/${path}?apiKey=${this.apiKey}&${params.toString()}`;
 
-    return result.json() as Promise<Response>;
+    const result = await fetch(url, {
+      method: "GET",
+    });
+
+    return result.json() as Promise<T>;
   }
 }
 

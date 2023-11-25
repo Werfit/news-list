@@ -24,9 +24,9 @@ const hexToRgba = (hex: string, alpha: number): string => {
 
 const Footer = () => (
   <Box
-    position="fixed"
-    bottom={0}
+    bgcolor="white"
     width="100vw"
+    mt={8}
     sx={{
       boxShadow: `0px -0.1rem 0.2rem ${hexToRgba(
         theme.palette.midnight.main,
